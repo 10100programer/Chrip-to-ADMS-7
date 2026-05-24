@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Chirp2Ftm400/Chirp2Ftm400.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Chirp2Ftm400.Tests/Chirp2Ftm400.Tests.csproj" />
+  </Folder>
+</Solution>
