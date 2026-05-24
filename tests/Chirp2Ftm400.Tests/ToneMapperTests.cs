@@ -30,8 +30,8 @@ public sealed class ToneMapperTests
         var (toneMode, ctcss, dcs, userCtcss, warnings) = ToneMapper.Map(ch);
 
         toneMode.Should().Be("OFF");
-        // ADMS-4 requires CTCSS and DCS always populated
-        ctcss.Should().Be("100.0 Hz");
+        // ADMS-7 requires CTCSS and DCS always populated; default CTCSS is 88.5 Hz
+        ctcss.Should().Be("88.5 Hz");
         dcs.Should().Be("023");
         warnings.Should().BeEmpty();
     }
@@ -59,12 +59,12 @@ public sealed class ToneMapperTests
     }
 
     [Fact]
-    public void TSQL_MapsToTSQL_UsesCToneFreq()
+    public void TSQL_MapsToToneSQL_UsesCToneFreq()
     {
         var ch = MakeChannel(tone: "TSQL", cToneFreq: "127.3");
         var (toneMode, ctcss, dcs, _, _) = ToneMapper.Map(ch);
 
-        toneMode.Should().Be("T SQL");
+        toneMode.Should().Be("TONE SQL");
         ctcss.Should().Be("127.3 Hz");
         dcs.Should().Be("023");  // always populated
     }
@@ -76,7 +76,7 @@ public sealed class ToneMapperTests
         var (toneMode, ctcss, dcs, _, _) = ToneMapper.Map(ch);
 
         toneMode.Should().Be("DCS");
-        ctcss.Should().Be("100.0 Hz");  // always populated
+        ctcss.Should().Be("88.5 Hz");  // always populated with ADMS-7 default
         dcs.Should().Be("023");
     }
 
@@ -87,7 +87,7 @@ public sealed class ToneMapperTests
         var (toneMode, ctcss, dcs, _, _) = ToneMapper.Map(ch);
 
         toneMode.Should().Be("DCS");
-        ctcss.Should().Be("100.0 Hz");  // always populated
+        ctcss.Should().Be("88.5 Hz");  // always populated with ADMS-7 default
         dcs.Should().Be("156");
     }
 
@@ -101,13 +101,13 @@ public sealed class ToneMapperTests
     }
 
     [Fact]
-    public void EmptyRToneFreq_DefaultsToHundredHz_WithWarning()
+    public void EmptyRToneFreq_DefaultsTo88_5Hz_WithWarning()
     {
         var ch = MakeChannel(tone: "Tone", rToneFreq: null);
         var (toneMode, ctcss, _, _, warnings) = ToneMapper.Map(ch);
 
         toneMode.Should().Be("TONE ENC");
-        ctcss.Should().Be("100.0 Hz");
+        ctcss.Should().Be("88.5 Hz");
         warnings.Should().ContainSingle().Which.Should().Contain("defaulting to");
     }
 
@@ -117,7 +117,7 @@ public sealed class ToneMapperTests
         var ch = MakeChannel(tone: "Cross", crossMode: "Tone->Tone", rToneFreq: "88.5");
         var (toneMode, ctcss, _, _, _) = ToneMapper.Map(ch);
 
-        toneMode.Should().Be("T SQL");
+        toneMode.Should().Be("TONE SQL");
         ctcss.Should().Be("88.5 Hz");
     }
 
@@ -137,7 +137,7 @@ public sealed class ToneMapperTests
         var ch = MakeChannel(tone: "Cross", crossMode: "->Tone", cToneFreq: "100.0");
         var (toneMode, _, _, _, warnings) = ToneMapper.Map(ch);
 
-        toneMode.Should().Be("T SQL");
+        toneMode.Should().Be("TONE SQL");
         warnings.Should().ContainSingle().Which.Should().Contain("TX has no tone");
     }
 

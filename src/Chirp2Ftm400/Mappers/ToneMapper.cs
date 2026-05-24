@@ -4,7 +4,7 @@ namespace Chirp2Ftm400.Mappers;
 
 public static class ToneMapper
 {
-    private const string DefaultCTCSS = "100.0 Hz";
+    private const string DefaultCTCSS = "88.5 Hz";
     private const string DefaultDCS = "023";
     private const string DefaultUserCTCSS = "1500 Hz";
 
@@ -34,7 +34,7 @@ public static class ToneMapper
 
             case "tsql":
                 // TX+RX CTCSS squelch
-                toneMode = "T SQL";
+                toneMode = "TONE SQL";
                 ctcss = FormatCtcss(chirp.cToneFreq, warnings);
                 dcs = DefaultDCS;
                 break;
@@ -99,23 +99,23 @@ public static class ToneMapper
         return crossMode.ToUpperInvariant() switch
         {
             // TX+RX tone squelch — use rToneFreq (lossy if cToneFreq differs)
-            "TONE->TONE" => ("T SQL", FormatCtcss(chirp.rToneFreq, warnings), DefaultDCS),
+            "TONE->TONE" => ("TONE SQL", FormatCtcss(chirp.rToneFreq, warnings), DefaultDCS),
 
             // RX-only tone squelch — use cToneFreq; TX has no tone
-            "->TONE" => WarnAndReturn("T SQL", FormatCtcss(chirp.cToneFreq, warnings), DefaultDCS,
-                "CrossMode '->Tone': TX has no tone encode; using T SQL with RX freq", warnings),
+            "->TONE" => WarnAndReturn("TONE SQL", FormatCtcss(chirp.cToneFreq, warnings), DefaultDCS,
+                "CrossMode '->Tone': TX has no tone encode; using TONE SQL with RX freq", warnings),
 
             // TX tone encode only, RX squelch open
             "TONE->" => ("TONE ENC", FormatCtcss(chirp.rToneFreq, warnings), DefaultDCS),
 
             "DTCS->DTCS" => ("DCS", DefaultCTCSS, FormatDcs(chirp.DtcsCode)),
 
-            // Mixed: fall back to T SQL with rToneFreq
-            "TONE->DTCS" or "DTCS->TONE" => WarnAndReturn("T SQL", FormatCtcss(chirp.rToneFreq, warnings), DefaultDCS,
-                $"CrossMode '{crossMode}' mixed CTCSS/DCS — using T SQL with rToneFreq (lossy)", warnings),
+            // Mixed: fall back to TONE SQL with rToneFreq
+            "TONE->DTCS" or "DTCS->TONE" => WarnAndReturn("TONE SQL", FormatCtcss(chirp.rToneFreq, warnings), DefaultDCS,
+                $"CrossMode '{crossMode}' mixed CTCSS/DCS — using TONE SQL with rToneFreq (lossy)", warnings),
 
-            _ => WarnAndReturn("T SQL", FormatCtcss(chirp.rToneFreq, warnings), DefaultDCS,
-                $"Complex CrossMode '{crossMode}' not fully supported; using T SQL encode only", warnings),
+            _ => WarnAndReturn("TONE SQL", FormatCtcss(chirp.rToneFreq, warnings), DefaultDCS,
+                $"Complex CrossMode '{crossMode}' not fully supported; using TONE SQL encode only", warnings),
         };
     }
 

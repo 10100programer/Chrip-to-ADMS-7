@@ -9,9 +9,9 @@ public static class ModeMapper
             "FM" => MapResult<string>.Ok("FM"),
             "NFM" => MapResult<string>.Ok("NFM"),
             "AM" => MapResult<string>.Ok("AM"),
-            "WFM" => MapResult<string>.Warn("FM", "WFM mapped to FM — FTM-400D has no broadcast wideband mode"),
-            "DN" => MapResult<string>.Warn("AUTO", "DN (C4FM digital) mapped to AUTO — radio will fall back to analog if needed"),
-            "DV" => MapResult<string>.Warn("FM", "DV (D-Star) is not supported on FTM-400D; mapped to FM"),
+            "WFM" => MapResult<string>.Warn("FM", "WFM mapped to FM — ADMS-7 has no broadcast wideband mode"),
+            "DN" => MapResult<string>.Warn("FM", "DN (C4FM digital) mapped to FM — ADMS-7 CSV format only supports FM/NFM/AM"),
+            "DV" => MapResult<string>.Warn("FM", "DV (D-Star) is not supported; mapped to FM"),
             var other => MapResult<string>.Warn("FM", $"Unknown mode '{other}', defaulting to FM"),
         };
     }

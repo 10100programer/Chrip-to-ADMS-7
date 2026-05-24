@@ -18,8 +18,8 @@ public sealed class ConvertSettings : CommandSettings
     public bool Overwrite { get; init; }
 
     [CommandOption("--max-channels")]
-    [Description("Maximum number of channels in the output (default: 500)")]
-    public int MaxChannels { get; init; } = 500;
+    [Description("Maximum number of channels in the output (default: 900 for ADMS-7)")]
+    public int MaxChannels { get; init; } = 900;
 
     [CommandOption("--renumber")]
     [Description("Renumber channels sequentially instead of using CHIRP Location")]

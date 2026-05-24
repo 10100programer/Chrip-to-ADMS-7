@@ -30,10 +30,10 @@ public sealed class SkipMapperTests
     }
 
     [Fact]
-    public void P_MapsToScan_NoWarning()
+    public void P_MapsToSelect_NoWarning()
     {
         var result = SkipMapper.Map("P");
-        result.Value.Should().Be("SCAN");
+        result.Value.Should().Be("SELECT");
         result.Warnings.Should().BeEmpty();
     }
 

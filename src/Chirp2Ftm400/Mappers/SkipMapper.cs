@@ -8,7 +8,7 @@ public static class SkipMapper
         {
             "" => MapResult<string>.Ok("OFF"),
             "S" => MapResult<string>.Ok("SKIP"),
-            "P" => MapResult<string>.Ok("SCAN"),
+            "P" => MapResult<string>.Ok("SELECT"),
             var other => MapResult<string>.Warn("OFF", $"Unknown skip value '{other}'; defaulting to OFF"),
         };
     }

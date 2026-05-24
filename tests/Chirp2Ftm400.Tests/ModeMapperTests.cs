@@ -36,10 +36,10 @@ public sealed class ModeMapperTests
     }
 
     [Fact]
-    public void DN_MapsToAuto_WithWarning()
+    public void DN_MapsToFM_WithWarning()
     {
         var result = ModeMapper.Map("DN");
-        result.Value.Should().Be("AUTO");
+        result.Value.Should().Be("FM");
         result.Warnings.Should().ContainSingle()
             .Which.Should().Contain("C4FM");
     }
